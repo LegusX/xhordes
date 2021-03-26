@@ -13,20 +13,30 @@
   "content_scripts": [
     {
       "matches": ["https://hordes.io/play"],
-      "js": ["borderify.js"]
+      "js": ["loader.js"],
+      "run_at": "document_start"
     }
   ],
 
   "permissions": [
-      "https://hordes.io/play",
-      "tabs",
-      "webRequest",
-      "webRequestBlocking",
-      "unlimitedStorage"
-  ],
+    "https://hordes.io/play",
+    "tabs",
+    "webRequest",
+    "webRequestBlocking",
+    "unlimitedStorage",
+    "storage"
+],
 
   "page_action": {
       "default_popup": "index.html"
+  },
+  
+  "background": {
+    "scripts": [
+      "src/browser-polyfill.js",
+      "src/zip-fs.min.js",
+      "src/background.js"
+    ]
   }
 
 }

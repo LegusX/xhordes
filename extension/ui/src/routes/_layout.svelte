@@ -8,7 +8,10 @@
 
 </style>
 
-<Nav {segment}/>
+<!-- Don't want to give the install page the nav bar -->
+{#if segment !== "install"}
+	<Nav {segment}/>
+{/if}
 
 <main>
 	<slot></slot>

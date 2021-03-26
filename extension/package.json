@@ -4,12 +4,13 @@
   "description": "",
   "main": "build.js",
   "scripts": {
-    "build": "cd ui && npx sapper export && cd ../ && node build.js",
+    "build": "cd ui && npx sapper export --entry \"/ install\"&& cd ../ && node build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@zip.js/zip.js": "^2.2.25",
     "fs-extra": "^9.1.0",
     "minify": "^7.0.1",
     "simple-folder-zip": "^1.1.0"

@@ -13,7 +13,8 @@
     "content_scripts": [
       {
         "matches": ["https://hordes.io/play"],
-        "js": ["loader.js"]
+        "js": ["loader.js"],
+        "run_at": "document_start"
       }
     ],
 
@@ -22,12 +23,18 @@
         "tabs",
         "webRequest",
         "webRequestBlocking",
-        "unlimitedStorage"
+        "unlimitedStorage",
+        "storage"
     ],
 
     "browser_action": {
         "default_popup": "index.html",
         "default_title": "XHordes"
-    }
+    },
   
+    "background": {
+      "scripts": [
+        "src/background.js"
+      ]
+    }
   }
