@@ -1,0 +1,5 @@
+/*
+The content script that gets injected into web pages to load all of our mods.
+
+Communicates with the main extension to get all the mods so it can embed them
+*/

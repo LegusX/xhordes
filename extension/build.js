@@ -18,7 +18,7 @@ console.verbose(IGNORE)
 //builds for a given browser if its manifest exists in ./manifests/
 async function build(browser) {
     console.log("Beginning build for "+browser)
-    if (!fs.existsSync(`./manifests/${browser}.json`)) throw new Error(`Manifest file for ${browser} doesn't exist!`)
+    if (!fs.existsSync(`./browsers/${browser}`)) throw new Error(`Browser specific folder doesn't exist!`)
 
     //Delete tmp and recreate the folder (in case previous process got interrupted)
     reset("tmp")
@@ -32,8 +32,13 @@ async function build(browser) {
         console.verbose(`Copied ./${path} to ./tmp/${path}`)
     }
 
-    fs.copySync(`./manifests/${browser}.json`, "./tmp/manifest.json")
-    console.verbose("Copied manifest file.")
+    //copy over browser specific code
+    fs.copySync(`./browsers/${browser}`, "./tmp/")
+    console.verbose("Copied browser specific files for "+browser)
+
+    //copy over the exported sapper build into the extension
+    fs.copySync("./ui/__sapper__/export", "./tmp")
+    console.verbose("Copied over exported sapper files.")
 
     //finally zip it all up
     console.verbose("Zipping file...")

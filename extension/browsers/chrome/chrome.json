@@ -1,0 +1,32 @@
+{
+
+  "manifest_version": 2,
+  "name": "XHordes",
+  "version": "0.1",
+
+  "description": "The official XHordes extension. Allows users to load mods into the game Hordes.io",
+
+  "icons": {
+    "48": "icons/border-48.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["https://hordes.io/play"],
+      "js": ["borderify.js"]
+    }
+  ],
+
+  "permissions": [
+      "https://hordes.io/play",
+      "tabs",
+      "webRequest",
+      "webRequestBlocking",
+      "unlimitedStorage"
+  ],
+
+  "page_action": {
+      "default_popup": "index.html"
+  }
+
+}
