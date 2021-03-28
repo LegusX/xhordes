@@ -8,6 +8,8 @@
         <script src="/bootstrap/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="/bootstrap/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 
+        <script src="src/browser-polyfill.js"></script>
+
         <script src="index.js"></script>
     </head>
     <body>
@@ -16,8 +18,8 @@
                 <h2 style="text-align:center">Mod Installer</h2>
                 <hr>
                 <div id="loaded" style="display:none">
-                    <a id="homelink"><h4 id="name">Mod name</h4></a>
                     <img id="icon" alt="Mod Icon" width=64 height=64 style="float:right">
+                    <a id="homelink"><h4 id="name">Mod name</h4></a>
                     <h5 id="author">Author</h5>
                     <p id="description"></p>
                     <hr>
@@ -25,7 +27,7 @@
                         <p>Are you sure you want to install this mod?</p>
                         <p><i><strong>Please make sure you're only installing mods from sources that you trust!</strong></i></p>
                         <button class="btn btn-warning" id="install">Install Mod</button>
-                        <button class="btn btn-danger" onclick="window.close()">Cancel</button>
+                        <button class="btn btn-danger" id="cancel">Cancel</button>
                     </div>
                 </div>
                 <div id="loading">

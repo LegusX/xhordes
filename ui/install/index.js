@@ -1,6 +1,11 @@
 let manifest = {}
 let icon
 
+// Make the code platform agnostic
+// I should be okay without this now that I'm using the polyfill, but keeping it just in case
+// Okay so apparently the polyfill doesn't work, so I still need this. Going to have look into why that's the case
+if (typeof browser === "undefined") browser = chrome
+
 window.onload = async ()=>{
     await getMod()
     render()
@@ -8,14 +13,10 @@ window.onload = async ()=>{
 
 async function getMod() {
     return new Promise((resolve, reject)=>{
-        console.log("hi?")
         let url = location.href.split("?")[1]
         let port = browser.runtime.connect()
-        console.log("connected")
         port.onMessage.addListener((m)=>{
-            console.log(m)
             if (m.type == "manifest") {
-                console.log("receieve manifest")
                 manifest = m.manifest
                 icon = m.icon
                 resolve()
@@ -25,17 +26,17 @@ async function getMod() {
             type:"getManifest",
             url:url
         })
-        console.log("message posted")
     })
 }
 
 function install(){
     let port = browser.runtime.connect()
-    port.onMessage = (m)=>{
+    port.onMessage.addListener((m)=>{
         if (m.type === "installed") {
             alert(manifest.name+" has been successfully installed!\nIf you currently have hordes.io open, reload the page to use the new mod.")
+            window.close()
         }
-    }
+    })
     port.postMessage({
         type:"install",
         url: location.href.split("?")[1]
@@ -49,6 +50,7 @@ function render() {
     document.getElementById("icon").src = icon
 
     document.getElementById("install").addEventListener("click",install)
+    document.getElementById("cancel").addEventListener("click", ()=>window.close())
 
     //hide loading and show loaded
     document.getElementById("loading").style.display = "none"

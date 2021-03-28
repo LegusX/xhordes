@@ -2,18 +2,16 @@ const fs = require('fs-extra')
 const zip = require("simple-folder-zip").default
 
 //random constants
-const BROWSERS = ["firefox", "chrome"]
-
-//my method of verbose logging
+const BROWSERS = fs.readdirSync("browsers").filter(x=>x!=="README.md") //include any paths that aren't the readme file
 const VERBOSE = process.argv.includes("-v") || process.argv.includes("--verbose")
-const DEV = process.argv.includes("--dev") || process.argv.includes("-d")
+const DEV = process.argv.includes("-d") || process.argv.includes("--dev")
+const IGNORE = fs.readFileSync(".ignore", "utf-8").split("\n") //figure out what files/directories to not include in the extension
 
+//Just to make the console a bit less spammy
 console.verbose = function(log) {
     if (VERBOSE) console.log(log)
 }
 
-//figure out what files/directories to not include in the extension
-const IGNORE = fs.readFileSync(".ignore", "utf-8").split("\n")
 console.verbose("Ignoring files/directories:")
 console.verbose(IGNORE)
 

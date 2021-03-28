@@ -1,46 +1,46 @@
 {
 
-    "manifest_version": 2,
-    "name": "XHordes",
-    "version": "0.0.0.1",
-    "homepage_url": "https://xhordes.legusx.dev",
-    "description": "The official XHordes extension. Allows users to load mods into the game Hordes.io",
-  
-    "icons": {
-      "48": "icons/border-48.png"
-    },
-  
-    "content_scripts": [
-      {
-        "matches": ["https://hordes.io/play"],
-        "js": ["loader.js"],
-        "run_at": "document_start"
-      }
-    ],
+  "manifest_version": 2,
+  "name": "XHordes",
+  "version": "0.0.0.1",
+  "homepage_url": "https://xhordes.legusx.dev",
+  "description": "The official XHordes extension. Allows users to load mods into the game Hordes.io",
 
-    "permissions": [
-        "https://hordes.io/play",
-        "unlimitedStorage",
-        "storage",
-        "downloads"
-    ],
+  "icons": {
+    "48": "icons/48.png"
+  },
 
-    "browser_action": {
-        "default_popup": "ui/popup/index.html",
-        "default_title": "XHordes"
-    },
-  
-    "background": {
-      "scripts": [
-        "src/idb-file-storage.js",
-        "src/jszip.min.js",
-        "src/background.js"
-      ]
-    },
-    "web_accessible_resources": [
-      "bootstrap/*",
-      "install/*",
-      "client/*.js",
-      "client/*.css"
+  "content_scripts": [
+    {
+      "matches": ["https://hordes.io/play"],
+      "js": ["src/loader.js"],
+      "run_at": "document_start"
+    }
+  ],
+
+  "permissions": [
+      "https://hordes.io/play",
+      "unlimitedStorage",
+      "storage",
+      "downloads"
+  ],
+
+  "browser_action": {
+      "default_popup": "ui/popup/index.html",
+      "default_title": "XHordes"
+  },
+
+  "background": {
+    "scripts": [
+      "src/idb-file-storage.js",
+      "src/jszip.min.js",
+      "src/background.js"
     ]
-  }
+  },
+
+  "web_accessible_resources": [
+    "bootstrap/*",
+    "install/*",
+    "src/*"
+  ]
+}

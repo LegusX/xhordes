@@ -1,4 +1,5 @@
 var modFS
+var currentZip
 //make the code platform agnostic
 // I should be okay without this now that I'm using the polyfill, but keeping it just in case
 if (typeof browser === "undefined") browser = chrome
@@ -8,7 +9,6 @@ browser.downloads.onCreated.addListener(downloadListener)
 //handles all messages from the content scripts and the install pages
 browser.runtime.onConnect.addListener((port)=>{
     port.onMessage.addListener((m)=>{
-        console.log(m)
         switch (m.type) {
             case "getMods":
                 getMods(port)
@@ -50,14 +50,10 @@ async function getMods(port) {
     }
 }
 
-//downloads a .xhordes.zip and saves it to the db
-async function install(port, url) {
-    let fs = new zip.fs.FS()
-    await fs.root.importHttpContent(url)
+async function install(port) {
+    if (typeof currentZip === "undefined") throw new Error("No .xhordes.zip was cached!")
 
-    //load manifest so we can add it to the mod list
-    let file = await fs.find("manifest.json")
-    manifest = JSON.parse(await file.getText())
+    let manifest = JSON.parse(await currentZip.file("manifest.json").async("string"))
 
     //update modlist to contain the new mod's information
     let modList = await browser.storage.local.get("modList")
@@ -70,10 +66,14 @@ async function install(port, url) {
         modList:modList
     })
 
-    let blob = await fs.root.exportBlob()
+    //save entire zip file to indexeddb for later retrieval
+    await modFS.put(`${manifest.name}.zip`, await currentZip.generateAsync({
+        type:"blob"
+    }))
 
-    //write the blob into a zip file
-    await modFS.put(`${manifest.name}.zip`, blob)
+    port.postMessage({
+        type:"installed"
+    })
 }
 
 async function getManifest(port,url) {
@@ -89,6 +89,8 @@ async function getManifest(port,url) {
     response.manifest = JSON.parse(await zip.file("manifest.json").async("string"))
     if (response.manifest.icon) response.icon = `data:image/${response.manifest.icon.split(".")[1]};base64,`+await zip.file(response.manifest.icon).async("base64")
     port.postMessage(response)
+
+    currentZip = zip //no need to redownload the file if we can just cache it instead
 }
 
 (async()=>{
