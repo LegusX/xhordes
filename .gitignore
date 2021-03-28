@@ -104,5 +104,8 @@ dist
 .tern-port
 
 # Ignore the build outputs
-build/
+builds/
 tmp/
+
+# Sapper stuff
+__sapper__/

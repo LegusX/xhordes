@@ -1,15 +1,8 @@
-const {fs} = window.zip
-
 var modFS
 //make the code platform agnostic
 // I should be okay without this now that I'm using the polyfill, but keeping it just in case
 if (typeof browser === "undefined") browser = chrome
 
-//add listener for .xhordes.zip downloads
-zipFilter = {
-    urls: ["*://*/*.xhordes.zip"] //only trigger listener for urls that end in .xhordes.zip
-}
-browser.webRequest.onBeforeRequest.addListener(zipListener, zipFilter)
 browser.downloads.onCreated.addListener(downloadListener)
 
 //handles all messages from the content scripts and the install pages
@@ -29,13 +22,6 @@ browser.runtime.onConnect.addListener((port)=>{
         }
     })
 })
-
-function zipListener(details) {
-    console.log("hello??")
-    if (details.originUrl.includes("chrome-extension") || details.originUrl.includes("moz-extension")) return; //don't want to cancel download requests for the zip by us
-    openInstallPage(details.url)
-    return {cancel:true}
-}
 
 function downloadListener(dl) {
     if (dl.url.includes(".xhordes.zip")) {
@@ -102,7 +88,6 @@ async function getManifest(port,url) {
     
     response.manifest = JSON.parse(await zip.file("manifest.json").async("string"))
     if (response.manifest.icon) response.icon = `data:image/${response.manifest.icon.split(".")[1]};base64,`+await zip.file(response.manifest.icon).async("base64")
-    console.log(response)
     port.postMessage(response)
 }
 

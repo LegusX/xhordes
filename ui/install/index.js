@@ -2,7 +2,6 @@ let manifest = {}
 let icon
 
 window.onload = async ()=>{
-    console.log("HELLO?")
     await getMod()
     render()
 }
@@ -50,4 +49,8 @@ function render() {
     document.getElementById("icon").src = icon
 
     document.getElementById("install").addEventListener("click",install)
+
+    //hide loading and show loaded
+    document.getElementById("loading").style.display = "none"
+    document.getElementById("loaded").style.display = ""
 }

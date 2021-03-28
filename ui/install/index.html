@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Install a Mod - XHordes</title>
+
+        <!-- bootstrap stuff -->
+        <link rel="stylesheet" href="/bootstrap/bootstrap.min.css" crossorigin="anonymous">
+        <script src="/bootstrap/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="/bootstrap/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+        <script src="index.js"></script>
+    </head>
+    <body>
+        <div class="container outer">
+            <div class="main" style="margin-top:20vh;">
+                <h2 style="text-align:center">Mod Installer</h2>
+                <hr>
+                <div id="loaded" style="display:none">
+                    <a id="homelink"><h4 id="name">Mod name</h4></a>
+                    <img id="icon" alt="Mod Icon" width=64 height=64 style="float:right">
+                    <h5 id="author">Author</h5>
+                    <p id="description"></p>
+                    <hr>
+                    <div style="text-align:center;">
+                        <p>Are you sure you want to install this mod?</p>
+                        <p><i><strong>Please make sure you're only installing mods from sources that you trust!</strong></i></p>
+                        <button class="btn btn-warning" id="install">Install Mod</button>
+                        <button class="btn btn-danger" onclick="window.close()">Cancel</button>
+                    </div>
+                </div>
+                <div id="loading">
+                    <p>Loading mod information...</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
