@@ -5,8 +5,8 @@ import commonjs from '@rollup/plugin-commonjs';
 import url from '@rollup/plugin-url';
 import svelte from 'rollup-plugin-svelte';
 import babel from '@rollup/plugin-babel';
-import { terser } from 'rollup-plugin-terser';
-import config from 'sapper/config/rollup.js';
+// import { terser } from 'rollup-plugin-terser';
+import config from 'sapper/config/rollup';
 import pkg from './package.json';
 
 const mode = process.env.NODE_ENV;
@@ -63,9 +63,9 @@ export default {
 				]
 			}),
 
-			!dev && terser({
-				module: true
-			})
+			// !dev && terser({
+			// 	module: true
+			// })
 		],
 
 		preserveEntrySignatures: false,

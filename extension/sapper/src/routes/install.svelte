@@ -9,7 +9,7 @@
     })
     async function getMod() {
         return new Promise(async(res,rej)=>{
-            if (window) {
+            if (typeof window !== "undefined") {
                 let url = location.href.split("?")[1]
                 if (url !== "") {
                     //download file, unzip it, and pull out the manifest and the
@@ -28,7 +28,6 @@
                 }
                 else rej("No url provided")
             }
-            else rej()
         })
     }
     function install(){

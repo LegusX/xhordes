@@ -35,6 +35,7 @@
     "scripts": [
       "src/browser-polyfill.js",
       "src/zip-fs.min.js",
+      "src/idb-file-storage.js",
       "src/background.js"
     ]
   }

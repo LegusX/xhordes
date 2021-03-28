@@ -6,6 +6,8 @@ const BROWSERS = ["firefox", "chrome"]
 
 //my method of verbose logging
 const VERBOSE = process.argv.includes("-v") || process.argv.includes("--verbose")
+const DEV = process.argv.includes("--dev") || process.argv.includes("-d")
+
 console.verbose = function(log) {
     if (VERBOSE) console.log(log)
 }
@@ -36,14 +38,21 @@ async function build(browser) {
     fs.copySync(`./browsers/${browser}`, "./tmp/")
     console.verbose("Copied browser specific files for "+browser)
 
-    //copy over the exported sapper build into the extension
-    fs.copySync("./ui/__sapper__/export", "./tmp")
-    console.verbose("Copied over exported sapper files.")
+    //copy over the ui files to root instead of their own folder
+    fs.copySync("ui", "tmp")
+    console.verbose("Copied the UI files")
 
-    //finally zip it all up
-    console.verbose("Zipping file...")
-    await zip("./tmp", `./builds/${browser}.zip`)
-    console.log(`${browser}.zip has been written to ./builds`)
+    if (!DEV) {
+        //finally zip it all up
+        console.verbose("Zipping file...")
+        await zip("./tmp", `./builds/${browser}.zip`)
+        console.log(`${browser}.zip has been written to ./builds`)
+    }
+    else {
+        //copy files into a plain folder for quick reloading in browsers
+        fs.mkdirSync(`builds/${browser}`)
+        fs.copySync("tmp", `builds/${browser}`)
+    }
 }
 
 //delete folder and then recreate it but empty
@@ -64,6 +73,7 @@ async function start() {
     let startTime = Date.now()
 
     reset("builds")
+
     //go through the supported browsers and build
     for (browser of BROWSERS) {
         await build(browser)

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Install a Mod - XHordes</title>
+
+        <!-- bootstrap stuff -->
+        <link rel="stylesheet" href="/bootstrap/bootstrap.min.css" crossorigin="anonymous">
+        <script src="/bootstrap/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="/bootstrap/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+        <!-- Random Libraries -->
+        <script src="zip-fs.min.js"></script>
+
+        <script src="index.js"></script>
+    </head>
+    <body>
+        <div class="container outer">
+            <div class="main">
+                <h2>Mod Installer</h2>
+                <hr>
+                <h4 id="name">Mod name</h4>
+                <h5 id="author">Author</h5>
+                <a id="homelink"><h5>Home Page</h5></a>
+                <img id="icon" alt="Mod Icon">
+                <p id="description"></p>
+                <hr>
+                <p>Are you sure you want to install this mod?</p>
+                <button class="btn btn-warning" id="install">Install Mod</button>
+                <button class="btn btn-danger" onclick="window.close()">Cancel</button>
+            </div>
+        </div>
+    </body>
+</html>
