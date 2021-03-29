@@ -49,9 +49,18 @@ body {
 
 .arrowup {
     position:absolute;
-    right:10%;
+    right:8%;
 }
 .arrowdown {
     position:absolute;
     right:15%;
+}
+
+.author {
+    display:inline-block;
+    width:50%;
+}
+
+hr {
+    margin-top:0;
 }

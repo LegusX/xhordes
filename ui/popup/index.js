@@ -76,22 +76,6 @@ async function updateModList() {
         title.style.display = "inline"
         homeLink.appendChild(title)
 
-        //mod ordering arrows
-        let up = document.createElement("button")
-        up.innerHTML = "&#9650;"
-        up.classList.add("arrowup")
-        up.addEventListener("click", sort)
-        up.setAttribute("mod", name)
-        div.appendChild(up)
-
-        let down = document.createElement("button")
-        down.innerHTML = "&#9660;"
-        down.classList.add("arrowdown")
-        down.addEventListener("click", sort)
-        down.setAttribute("mod", name)
-        div.appendChild(down)
-        
-
         let icon = document.createElement("img")
         icon.src = mod.icon
         icon.classList.add("icon")
@@ -104,7 +88,25 @@ async function updateModList() {
 
         let author = document.createElement("p")
         author.innerText = "By "+mod.author
+        author.classList.add("author")
         div.appendChild(author)
+
+        //mod ordering arrows
+        let up = document.createElement("button")
+        up.innerHTML = "&#9650;"
+        up.classList.add("arrowup")
+        up.classList.add("btn")
+        up.addEventListener("click", sort)
+        up.setAttribute("mod", name)
+        div.appendChild(up)
+
+        let down = document.createElement("button")
+        down.innerHTML = "&#9660;"
+        down.classList.add("arrowdown")
+        down.classList.add("btn")
+        down.addEventListener("click", sort)
+        down.setAttribute("mod", name)
+        div.appendChild(down)
 
         if (mod.short) {
             let short = document.createElement("p")
