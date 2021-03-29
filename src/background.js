@@ -19,6 +19,9 @@ browser.runtime.onConnect.addListener((port)=>{
             case "getManifest":
                 getManifest(port, m.url)
                 break;
+            case "uninstall":
+                uninstall(port,m.mod)
+                break;
         }
     })
 })
@@ -119,6 +122,22 @@ async function getManifest(port,url) {
     port.postMessage(response)
 
     currentZip = zip //no need to redownload the file if we can just cache it instead
+}
+
+async function uninstall(port, name) {
+    //remove metadata
+    let meta = (await browser.storage.local.get(name))[name]
+    await browser.storage.local.remove(name)
+
+    //remove all the saved files
+    await modFS.remove(name+"-"+"manifest.json")
+    if (meta.js) await modFS.remove(name+"-"+meta.js)
+    if (meta.css) await modFS.remove(name+"-"+meta.css)
+
+    port.postMessage({
+        type:"uninstalled",
+        mod:name
+    })
 }
 
 (async()=>{

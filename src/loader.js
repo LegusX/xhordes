@@ -56,7 +56,6 @@ Communicates with the main extension to get all the mods so it can embed them
         let script = document.createElement("script")
         script.innerHTML = file
         document.head.appendChild(script)
-        console.log(script)
     }
     function loadCSS(file) {
         let script = document.createElement("style")

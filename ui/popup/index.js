@@ -3,6 +3,7 @@
 if (typeof browser === "undefined") browser = chrome
 
 var currentTab = "home"
+const port = browser.runtime.connect()
 
 //from https://stackoverflow.com/a/7180095
 Array.prototype.move = function(from, to) {
@@ -117,6 +118,17 @@ async function updateModList() {
         let hr = document.createElement("hr")
         div.appendChild(hr)
 
+        //add context menu to div
+        div.addEventListener("contextmenu", (e)=>{
+            e.preventDefault()
+            new Contextual({
+                width:"200px",
+                items: [
+                    {label:"Uninstall", onClick: ()=>{uninstall(name)}}
+                ]
+            })
+        })
+
         //finally append this whole thing to the mods div
         modDiv.appendChild(div)
 
@@ -179,9 +191,24 @@ async function sort(e) {
     await browser.storage.local.set({modList})
 }
 
-let port = browser.runtime.connect()
+async function uninstall(name) {
+    //remove from modList
+    let data = await browser.storage.local.get("modList")
+    let modList = data.modList
+    modList.splice(modList.indexOf(name), 1)
+    await browser.storage.local.set({modList})
+
+    //remove from dom
+    document.getElementById(name).parentElement.removeChild(document.getElementById(name))
+
+    //if there are no mods left then put the "find more mods" message back
+    if (modList.length === 0) updateModList()
+}
+
 port.onMessage.addListener((m)=>{
     switch (m.type) {
-
+        case "uninstalled":
+            //might put some sort of pop up here eventually
+            break;
     }
 })
