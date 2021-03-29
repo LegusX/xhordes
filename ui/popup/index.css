@@ -46,3 +46,12 @@ body {
     position:absolute;
     right:10%
 }
+
+.arrowup {
+    position:absolute;
+    right:10%;
+}
+.arrowdown {
+    position:absolute;
+    right:15%;
+}

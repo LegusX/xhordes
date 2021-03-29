@@ -4,6 +4,11 @@ if (typeof browser === "undefined") browser = chrome
 
 var currentTab = "home"
 
+//from https://stackoverflow.com/a/7180095
+Array.prototype.move = function(from, to) {
+    this.splice(to, 0, this.splice(from, 1)[0]);
+};
+
 window.onload = ()=>{
     document.getElementById("homelink").addEventListener("click", ()=>tab("home"))
     document.getElementById("modslink").addEventListener("click", ()=>tab("mods"))
@@ -50,7 +55,9 @@ async function updateModList() {
         div.classList.add("container-fluid")
         div.style.minHeight = "32px"
         div.style.marginTop = "1em"
+        div.id = name
 
+        //on/off button
         let button = document.createElement("button")
         if (mod.enabled) button.classList.add("btn-success"),button.innerText = "ON"
         else button.classList.add("btn-danger"),button.innerText = "OFF"
@@ -68,6 +75,22 @@ async function updateModList() {
         title.innerText = name
         title.style.display = "inline"
         homeLink.appendChild(title)
+
+        //mod ordering arrows
+        let up = document.createElement("button")
+        up.innerHTML = "&#9650;"
+        up.classList.add("arrowup")
+        up.addEventListener("click", sort)
+        up.setAttribute("mod", name)
+        div.appendChild(up)
+
+        let down = document.createElement("button")
+        down.innerHTML = "&#9660;"
+        down.classList.add("arrowdown")
+        down.addEventListener("click", sort)
+        down.setAttribute("mod", name)
+        div.appendChild(down)
+        
 
         let icon = document.createElement("img")
         icon.src = mod.icon
@@ -130,6 +153,28 @@ async function toggle(e) {
         e.target.classList.add("btn-danger")
     }
     await browser.storage.local.set({[name]:mod})
+}
+
+async function sort(e) {
+    let arrow = e.target
+    let name = arrow.getAttribute("mod")
+    let data = await browser.storage.local.get("modList")
+    let modList = data.modList
+
+    //change the order in the storage and in the mods div
+    if (arrow.classList.contains("arrowup")) {
+        if (modList.indexOf(name) === 0) return //mod is already at the top so it can't go any higher
+        let modDiv = document.getElementById(name)
+        document.getElementById("mods").insertBefore(modDiv, modDiv.previousSibling)
+        modList.move(modList.indexOf(name), modList.indexOf(name)-1)
+    }
+    if (arrow.classList.contains("arrowdown")) {
+        if (modList.indexOf(name) === modList.length-1) return //mod is already at the bottom so it can't go any lower
+        let modDiv = document.getElementById(name)
+        document.getElementById("mods").insertBefore(modDiv, modDiv.nextSibling.nextSibling)
+        modList.move(modList.indexOf(name), modList.indexOf(name)+1)
+    }
+    await browser.storage.local.set({modList})
 }
 
 let port = browser.runtime.connect()
