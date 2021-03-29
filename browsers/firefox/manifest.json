@@ -13,8 +13,7 @@
   "content_scripts": [
     {
       "matches": ["https://hordes.io/play"],
-      "js": ["src/loader.js"],
-      "run_at": "document_start"
+      "js": ["src/idb-file-storage.js", "src/loader.js"]
     }
   ],
 

@@ -9,8 +9,7 @@
   "content_scripts": [
     {
       "matches": ["https://hordes.io/play"],
-      "js": ["src/loader.js"],
-      "run_at": "document_start"
+      "js": ["src/loader.js"]
     }
   ],
 
@@ -38,7 +37,7 @@
   "web_accessible_resources": [
     "bootstrap/*",
     "install/*",
-    "src/browser-polyfill.js"
+    "src/*"
   ]
 
 }

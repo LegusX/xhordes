@@ -40,14 +40,30 @@ function openInstallPage(url) {
 
 //retrieves all the mods from the db and sends them to loader.js so that they can be loaded into the game
 async function getMods(port) {
-    let modPaths = await modFS.list()
-    for (let path of modPaths) {
-        let blob = await modFS.get(path)
-        port.postMessage({
-            type:"mod",
-            blob: blob
-        })
+    let data = await browser.storage.local.get("modList")
+    console.log(await modFS.list())
+    let modList = data.modList
+    if (typeof modList === "undefined") return; //no mods are installed
+    let mods = []
+    for (let name of modList) {
+        let mod = {}
+        let data = await browser.storage.local.get(name)
+        let manifest = data[name]
+        if (manifest.js) {
+            let blob = await modFS.get(name+"-"+manifest.js)
+            mod.js = await blob.text()
+        }
+        if (manifest.css) {
+            let blob = await modFS.get(name+"-"+manifest.css)
+            mod.css = await blob.text()
+        }
+        if (mod !== {}) mods.push(mod)
     }
+    console.log("sending mods")
+    port.postMessage({
+        type:"mods",
+        mods
+    })
 }
 
 async function install(port) {
@@ -68,15 +84,20 @@ async function install(port) {
         home:manifest.home,
         description:manifest.description,
         icon:`data:image/${manifest.icon.split(".")[1]};base64,`+await currentZip.file(manifest.icon).async("base64"),
+        js:manifest.js,
+        css:manifest.css,
         version:manifest.version,
         enabled:true
     }
     await browser.storage.local.set({[manifest.name]:meta})
 
     //save entire zip file to indexeddb for later retrieval
-    await modFS.put(`${manifest.name}.zip`, await currentZip.generateAsync({
-        type:"blob"
-    }))
+    // await modFS.put(`${manifest.name}.zip`, await currentZip.generateAsync({
+    //     type:"blob"
+    // }))
+    await modFS.put(manifest.name+"-manifest.json", await currentZip.file("manifest.json").async("blob"))
+    if (manifest.js) await modFS.put(manifest.name+"-"+manifest.js, await currentZip.file(manifest.js).async("blob"))
+    if (manifest.css) await modFS.put(manifest.name+"-"+manifest.css, await currentZip.file(manifest.css).async("blob"))
 
     port.postMessage({
         type:"installed"
