@@ -1,0 +1,48 @@
+body {
+    width:400px;
+    overflow:hidden;
+}
+
+.tabdiv {
+    margin-top:1rem;
+    margin-bottom:1rem;
+}
+
+.label {
+    border-radius:3px;
+    padding-right:0.25rem;
+    padding-left:0.25rem;
+    padding-top:0.12rem;
+    padding-bottom:0.12rem;
+    display:inline;
+    max-width:fit-content;
+    user-select:none;
+}
+.label.red {
+    background-color: var(--red);
+    color: #fff;
+    border-color: var(--red);
+}
+.label.green {
+    background-color: var(--green);
+    color: #fff;
+    border-color:var(--green);
+}
+.label.grey {
+    background-color: var(--grey);
+    color: #fff;
+    border-color:var(--grey);
+}
+
+.icon {
+    height:42px;
+    width:42px;
+    float:left;
+    padding-top:10px;
+    padding-right:10px;
+}
+
+.toggle {
+    position:absolute;
+    right:10%
+}

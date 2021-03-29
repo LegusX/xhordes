@@ -56,15 +56,22 @@ async function install(port) {
     let manifest = JSON.parse(await currentZip.file("manifest.json").async("string"))
 
     //update modlist to contain the new mod's information
-    let modList = await browser.storage.local.get("modList")
-    modList[manifest.name] = {
+    let data = await browser.storage.local.get("modList")
+    let modList = data.modList
+    if (typeof modList === "undefined") modList = [manifest.name]
+    else if (modList.indexOf(manifest.name) === -1) modList.push(manifest.name)
+    await browser.storage.local.set({modList})
+
+    //save metadata to storage as well
+    let meta = {
         author:manifest.author,
         home:manifest.home,
-        description:manifest.description
+        description:manifest.description,
+        icon:`data:image/${manifest.icon.split(".")[1]};base64,`+await currentZip.file(manifest.icon).async("base64"),
+        version:manifest.version,
+        enabled:true
     }
-    browser.storage.local.set({
-        modList:modList
-    })
+    await browser.storage.local.set({[manifest.name]:meta})
 
     //save entire zip file to indexeddb for later retrieval
     await modFS.put(`${manifest.name}.zip`, await currentZip.generateAsync({

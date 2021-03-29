@@ -1,9 +1,36 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
+        <link rel="stylesheet" href="/bootstrap/bootstrap.min.css" crossorigin="anonymous">
+        <script src="/bootstrap/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="/bootstrap/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+        <script src="/src/browser-polyfill.js"></script>
+
+        <link href="index.css" rel="stylesheet">
+        <script src="index.js"></script>
     </head>
     <body>
-        <p>WIP</p>
+        <nav class="nav nav-tabs bg-dark">
+            <a class="nav-link active" href="#" id="homelink">Home</a>
+            <a class="nav-link" href="#" id="modslink">Mods</a>
+            <a class="nav-link" href="#" id="settingslink">Settings</a>
+        </nav>
+        <div id="home" class="container tabdiv" style="text-align:center;">
+            <h2>Welcome to XHordes!</h2>
+            <hr>
+            <h4 style="display:inline">Current Status:</h4>
+            <p id="status" class="">status</p>
+            <p>Mods Installed: <span id="modcount">0</span></p>
+            <p>Mods Enabled: <span id="activemodcount">0</span></p>
+        </div>
+        <div id=mods style="display:none;" class="container tabdiv">
+
+        </div>
+        <div id=settings style="display:none;" class="container tabdiv">
+            <p>There aren't any settings yet. If you have suggestions for some, let me know</p>
+        </div>
     </body>
 </html>

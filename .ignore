@@ -4,7 +4,7 @@ manifests
 build.js
 package-lock.json
 package.json
-readme.md
+README.md
 builds
 tmp
 ui
