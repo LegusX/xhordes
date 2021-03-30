@@ -27,6 +27,7 @@ browser.runtime.onConnect.addListener((port)=>{
 })
 
 function downloadListener(dl) {
+    if (typeof dl.byExtensionId !== "undefined") return //download initiated by us
     if (dl.url.includes(".xhordes.zip")) {
         console.log("Detected .xhordes.zip file")
         browser.downloads.cancel(dl.id)
@@ -94,10 +95,6 @@ async function install(port) {
     }
     await browser.storage.local.set({[manifest.name]:meta})
 
-    //save entire zip file to indexeddb for later retrieval
-    // await modFS.put(`${manifest.name}.zip`, await currentZip.generateAsync({
-    //     type:"blob"
-    // }))
     await modFS.put(manifest.name+"-manifest.json", await currentZip.file("manifest.json").async("blob"))
     if (manifest.js) await modFS.put(manifest.name+"-"+manifest.js, await currentZip.file(manifest.js).async("blob"))
     if (manifest.css) await modFS.put(manifest.name+"-"+manifest.css, await currentZip.file(manifest.css).async("blob"))

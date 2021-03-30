@@ -43,7 +43,7 @@ Communicates with the main extension to get all the mods so it can embed them
             case "mods": 
                 for (let mod of m.mods) {
                     console.log(mod)
-                    if (mod.js) loadJS(mod.js)
+                    if (mod.js) loadJS(mod.js, mod.module)
                     if (mod.css) loadCSS(mod.css)
                 }
         }
@@ -52,7 +52,7 @@ Communicates with the main extension to get all the mods so it can embed them
         type:"getMods"
     })
 
-    function loadJS(file) {
+    function loadJS(file, module) {
         let script = document.createElement("script")
         script.innerHTML = file
         document.head.appendChild(script)

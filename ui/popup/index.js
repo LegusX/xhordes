@@ -140,7 +140,7 @@ async function updateModList() {
 
     if (modList.length == 0) {
         let nomods = document.createElement("p")
-        nomods.innerHTML = "It looks like you don't have any mods installed! Check out the <a href=''>Discord Server</a> for a list of curated mods!"
+        nomods.innerHTML = "It looks like you don't have any mods installed! Check out the <a href='https://discord.gg/y9YS633r5p'>Discord Server</a> for a list of mods! (Note that no such list actually exists, but there will be one eventually)"
         modDiv.appendChild(nomods)
     }
 

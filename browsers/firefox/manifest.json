@@ -2,18 +2,18 @@
 
   "manifest_version": 2,
   "name": "XHordes",
-  "version": "0.0.0.1",
+  "version": "0.0.1",
   "homepage_url": "https://xhordes.legusx.dev",
   "description": "The official XHordes extension. Allows users to load mods into the game Hordes.io",
 
   "icons": {
-    "48": "icons/48.png"
+    "128": "icons/128.png"
   },
 
   "content_scripts": [
     {
       "matches": ["https://hordes.io/play"],
-      "js": ["src/idb-file-storage.js", "src/loader.js"]
+      "js": ["src/loader.js"]
     }
   ],
 
