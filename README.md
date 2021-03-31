@@ -3,6 +3,8 @@ The new and improved XHordes, back after a *long* hiatus.
 
 XHordes is a browser extension that allows you to download and install mods for the browser game [Hordes.io](https://hordes.io).
 
+[![Firefox Addon](store-icons/firefox.png)](https://addons.mozilla.org/en-US/firefox/addon/xhordes/) [![Chrome Extension](store-icons/chromewebstore.png)](https://chrome.google.com/webstore/detail/xhordes/gbpigolhkeokbbpieimeiknacjhhejhl?hl)
+
 Current Features:
 * Mod Installation from .xhordes.zip files.
 
