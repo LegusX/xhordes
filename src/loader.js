@@ -4,7 +4,6 @@ The content script that gets injected into web pages to load all of our mods.
 Communicates with the main extension to get all the mods so it can embed them
 */
 (async()=>{
-    console.log("hello world?")
     ////////////////////////////////////////////////////////////////
     // Will eventually come back to this code to implement a caching system, but until then we'll just pull everything via the messaging system
     //
@@ -42,7 +41,6 @@ Communicates with the main extension to get all the mods so it can embed them
         switch (m.type) {
             case "mods": 
                 for (let mod of m.mods) {
-                    console.log(mod)
                     if (mod.js) loadJS(mod.js, mod.module)
                     if (mod.css) loadCSS(mod.css)
                 }
