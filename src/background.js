@@ -91,6 +91,7 @@ async function install(port) {
         js:manifest.js,
         css:manifest.css,
         version:manifest.version,
+        short:manifest.short,
         enabled:true
     }
     await browser.storage.local.set({[manifest.name]:meta})
