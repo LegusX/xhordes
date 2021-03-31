@@ -5,6 +5,7 @@ var currentZip
 if (typeof browser === "undefined") browser = chrome
 
 browser.downloads.onCreated.addListener(downloadListener)
+browser.webRequest.onBeforeRequest.addListener(requestListener, {urls:["https://hordes.io/client.js*"]}, ["blocking"])
 
 //handles all messages from the content scripts and the install pages
 browser.runtime.onConnect.addListener((port)=>{
@@ -25,6 +26,11 @@ browser.runtime.onConnect.addListener((port)=>{
         }
     })
 })
+
+function requestListener (details) {
+    console.log("request?")
+    return {redirectUrl:"https://cdn.jsdelivr.net/gh/LegusX/xhordes-expose/build/client.js"}
+}
 
 function downloadListener(dl) {
     if (typeof dl.byExtensionId !== "undefined") return //download initiated by us
@@ -114,12 +120,14 @@ async function getManifest(port,url) {
     let data = await fetch(url)
     data = await data.blob()
     await zip.loadAsync(data)
+    currentZip = zip //no need to redownload the file if we can just cache it instead
     
     response.manifest = JSON.parse(await zip.file("manifest.json").async("string"))
+
+    if (!(await verify(response.manifest, port))) return; //if it fails verification don't bother sending over the manifest
+
     if (response.manifest.icon) response.icon = `data:image/${response.manifest.icon.split(".")[1]};base64,`+await zip.file(response.manifest.icon).async("base64")
     port.postMessage(response)
-
-    currentZip = zip //no need to redownload the file if we can just cache it instead
 }
 
 async function uninstall(port, name) {
@@ -141,3 +149,42 @@ async function uninstall(port, name) {
 (async()=>{
     modFS = await IDBFiles.getFileStorage({name:"mods"})
 })()
+
+//makes sure the manifest follows all the rules as defined in the wiki
+async function verify(meta, port) {
+    let error = {
+        type:"error",
+        error:""
+    }
+
+    //make sure required fields are good
+    if (typeof meta.name === "undefined") error.error="Mod name is undefined!"
+    if (typeof meta.name !== "undefined" && meta.name.length > 20) error.error="Mod name cannot exceed 20 characters!"
+    if (typeof meta.name !== "undefined" && meta.name.length == 0) error.error="Mod name cannot be empty!"
+    if (typeof meta.author === "undefined") error.error+="\nAuthor field is undefined!"
+    if (typeof meta.author !== "undefined" && meta.author.length > 20) error.error+="\nAuthor field cannot exceed 20 characters!"
+    if (typeof meta.author !== "undefined" && meta.author.length == 0) error.error+="\nAuthor field cannot be empty!"
+    if (typeof meta.description === "undefined") error.error+="\nDescription is undefined!"
+    if (typeof meta.description !== "undefined" && meta.description.length > 500) error.error+="\nDescription cannot exceed 500 characters!"
+    if (typeof meta.description !== "undefined" && meta.description.length == 0) error.error+="\nDescription cannot be empty!"
+
+    //make sure the specified files exist
+    if (typeof meta.js !== "undefined") {
+        let file = await currentZip.file(meta.js)
+        if (file === null) error.error+=`\nFile '${meta.js}' not found!`
+    }
+    if (typeof meta.css !== "undefined") {
+        let file = await currentZip.file(meta.css)
+        if (file === null) error.error+=`\nFile '${meta.css}' not found!`
+    }
+    if (typeof meta.icon !== "undefined") {
+        let file = await currentZip.file(meta.icon)
+        if (file === null) error.error+=`\nFile '${meta.icon}' not found!`
+    }
+    
+    if (error.error !== "") {
+        port.postMessage(error)
+        return false
+    }
+    else return true
+}

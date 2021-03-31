@@ -21,6 +21,11 @@ async function getMod() {
                 icon = m.icon
                 resolve()
             }
+            if (m.type == "error") {
+                document.getElementById("loading").style.display = "none"
+                document.getElementById("error").style.display = ""
+                document.getElementById("errortext").innerText = m.error
+            }
         })
         port.postMessage({
             type:"getManifest",
