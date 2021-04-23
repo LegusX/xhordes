@@ -22,6 +22,7 @@
             <a class="nav-link active" href="#" id="homelink">Home</a>
             <a class="nav-link" href="#" id="modslink">Mods</a>
             <a class="nav-link" href="#" id="settingslink">Settings</a>
+            <a class="nav-link" href="#" id="devlink" style="display:none;">Dev</a>
         </nav>
         <div id="home" class="container tabdiv" style="text-align:center;">
             <h2>Welcome to XHordes!</h2>
@@ -35,7 +36,24 @@
 
         </div>
         <div id=settings style="display:none;" class="container tabdiv">
-            <p>There aren't any settings yet. If you have suggestions for some, let me know</p>
+            <p>There aren't many settings yet. If you have suggestions for some, let me know</p>
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="devmode">
+                <label class="custom-control-label" for="devmode">Dev Mode</label>
+            </div>
+        </div>
+        <div id="devtools" style="display:none;" class="container tabdiv">
+            <h2>Dev Tools</h2>
+            <hr>
+            <h4>Bridge</h4>
+            <div class="input-group mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">Port:</div>
+                </div>
+                <input type="text" class="form-control" id="port" value="3001">
+              </div>
+            <button class="btn btn-primary" id="listen">Listen</button>
+            <p id="devstatus">Not Connected</p>
         </div>
     </body>
 </html>

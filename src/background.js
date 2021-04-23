@@ -23,6 +23,9 @@ browser.runtime.onConnect.addListener((port)=>{
             case "uninstall":
                 uninstall(port,m.mod)
                 break;
+            case "dev":
+                dev(m.port)
+                break;
         }
     })
 })
@@ -187,4 +190,13 @@ async function verify(meta, port) {
         return false
     }
     else return true
+}
+
+function dev(port) {
+    ws = new WebSocket("localhost:"+port)
+    ws.onopen = ()=>{
+        ws.send(JSON.stringify({
+            type:"ready"
+        }))
+    }
 }

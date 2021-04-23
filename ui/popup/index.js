@@ -14,9 +14,12 @@ window.onload = ()=>{
     document.getElementById("homelink").addEventListener("click", ()=>tab("home"))
     document.getElementById("modslink").addEventListener("click", ()=>tab("mods"))
     document.getElementById("settingslink").addEventListener("click", ()=>tab("settings"))
+    document.getElementById("devlink").addEventListener("click", ()=>tab("devtools"))
 
     status("GOOD", "green")
     updateModList()
+    settings()
+    dev()
 }
 
 function tab(page) {
@@ -27,9 +30,43 @@ function tab(page) {
     currentTab = page
 }
 
+//changes the home page status (Will eventually be used to display whether xhordes is on/off, or if hordes has been updated)
 function status(status, color) {
     document.getElementById("status").innerText = status
     document.getElementById("status").classList = "label "+color
+}
+
+//init all the settings listeners
+async function settings() {
+    let settings = (await browser.storage.local.get("settings")).settings
+    // if there is no settings data saved, then create one
+    if (typeof settings === "undefined") {
+        settings = {
+            dev:false
+        }
+        await browser.storage.local.set({settings})
+    }
+
+    //enabling dev mode
+    document.getElementById("devmode").checked = settings.dev
+    document.getElementById("devmode").addEventListener("click", async(e)=>{
+        settings.dev = e.target.checked
+        await browser.storage.local.set({settings})
+
+        if (settings.dev) document.getElementById("devlink").style.display=""
+        else document.getElementById("devlink").style.display="none"
+    })
+    if (settings.dev) document.getElementById("devlink").style.display=""
+}
+
+//init dev stuff
+async function dev() {
+    document.getElementById("listen").addEventListener("click", ()=>{
+        port.postMessage({
+            type:"dev",
+            port: document.getElementById("port").value
+        })
+    })
 }
 
 //retrieves the mod list from browser.storage and then adds it to the "mods" tab
@@ -209,6 +246,9 @@ port.onMessage.addListener((m)=>{
     switch (m.type) {
         case "uninstalled":
             //might put some sort of pop up here eventually
+            break;
+        case "dev":
+            document.getElementById("devstatus").innerText = m.status
             break;
     }
 })
